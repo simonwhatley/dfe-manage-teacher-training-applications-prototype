@@ -45,7 +45,7 @@
     homepageUrl: "/",
     serviceName: serviceName,
     serviceUrl: "/",
-    containerClasses: "govuk-width-container"
+    containerClasses: "govuk-width-container {{- ' ' + containerClasses if containerClasses }}"
   }) }}
 {% endblock %}
 
@@ -56,10 +56,6 @@
     {{ govukFooter({
       meta: {
         items: [
-          {
-            href: "https://govuk-prototype-kit.herokuapp.com/",
-            text: "GOV.UK Prototype Kit " + releaseVersion
-          },
           {
             href: "/prototype-admin/clear-data",
             text: "Clear data"
@@ -75,5 +71,4 @@
     {% include "includes/scripts.html" %}
     {% block pageScripts %}{% endblock %}
   {% endblock %}
-  <!-- GOV.UK Prototype Kit {{releaseVersion}} -->
 {% endblock %}
