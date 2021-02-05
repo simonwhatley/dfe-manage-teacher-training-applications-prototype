@@ -1,24 +1,14 @@
-console.log('1111');
-
 const express = require('express')
 const router = express.Router()
 
-console.log('2222');
+const organisations = require('./data/organisations.json').filter(org => !org.isRegistered && org.isAccreditedBody)
 
-let organisations = require('./data/registrations.json')
-organisations.filter(org => !org.isRegistered && org.isAccreditedBody)
-
-console.log('3333');
-
-let providers = require('./data/registrations.json')
-providers.filter(org => !org.isAccreditedBody)
-
-console.log('4444');
+const providers = require('./data/organisations.json').filter(org => !org.isAccreditedBody)
 
 function checkHasAnswers (req, res, next) {
   // console.log(req.session.data.registration)
   if (req.session.data.registration === undefined) {
-    res.redirect('/register')
+    res.redirect('/')
   } else {
     next()
   }
@@ -37,13 +27,16 @@ router.get('/', (req, res) => {
   // delete any previous onboarding data
   delete req.session.data.registration
 
-  res.render('register/v1/index', {
+  res.render(`./${req.feature}/${req.version}/index`, {
+    actions: {
+      start: `/${req.feature}/${req.version}/organisations`
+    },
     organisations
   })
 })
 
 
-router.get('/register/:organisationId/start', (req, res) => {
+router.get('/organisations/:organisationId/start', (req, res) => {
   // set up the structure into which we'll put the onboarding data
   if (req.session.data.registration === undefined || req.session.data.registration.accreditingBody.id !== req.params.organisationId) {
     req.session.data.registration = {}
@@ -69,9 +62,9 @@ router.get('/register/:organisationId/start', (req, res) => {
   // set the first training provider id
   const trainingProviderId = req.session.data.registration.trainingProvidersIds[0]
 
-  res.render('register/v1/start', {
+  res.render(`./${req.feature}/${req.version}/start`, {
     actions: {
-      next: `/register/${req.params.organisationId}/providers/${trainingProviderId}`
+      next: `/${req.feature}/${req.version}/organisations/${req.params.organisationId}/providers/${trainingProviderId}`
     },
     accreditingBody: req.session.data.registration.accreditingBody,
     trainingProviders: req.session.data.registration.trainingProviders
@@ -79,35 +72,35 @@ router.get('/register/:organisationId/start', (req, res) => {
 })
 
 
-router.get('/register/:organisationId/providers/:providerId', checkHasAnswers, (req, res) => {
+router.get('/organisations/:organisationId/providers/:providerId', checkHasAnswers, (req, res) => {
   const trainingProvider = req.session.data.registration.trainingProviders.filter(org => org.id === req.params.providerId)[0]
 
   // get the position of the current provider id
   const position = req.session.data.registration.trainingProvidersIds.indexOf(req.params.providerId)
 
   // set the save route for new or change flow
-  let save = `/register/${req.params.organisationId}/providers/${req.params.providerId}`
+  let save = `/${req.feature}/${req.version}/organisations/${req.params.organisationId}/providers/${req.params.providerId}`
   if (req.headers.referer.includes('check-your-answers')) {
     save = save + '?referer=check-your-answers'
   }
 
   // set the back button default to the start page
-  let back = `/register/${req.params.organisationId}/start`
+  let back = `/${req.feature}/${req.version}/organisations/${req.params.organisationId}/start`
 
   // set the back button to the check your answers page if that's where the user came from
   if (req.query.referer == 'check-your-answers') {
-    back = `/register/${req.params.organisationId}/check-your-answers`
+    back = `/${req.feature}/${req.version}/organisations/${req.params.organisationId}/check-your-answers`
   } else {
     // if we're no on the first provider, we need to change the back button
     if (position > 0) {
       // get the previous provider id from the array
       const previousProviderId = req.session.data.registration.trainingProvidersIds[position - 1]
       // set the back link
-      back = `/register/${req.params.organisationId}/providers/${previousProviderId}`
+      back = `/${req.feature}/${req.version}/organisations/${req.params.organisationId}/providers/${previousProviderId}`
     }
   }
 
-  res.render('register/v1/provider', {
+  res.render(`./${req.feature}/${req.version}/provider`, {
     actions: {
       save: save,
       back: back
@@ -117,7 +110,7 @@ router.get('/register/:organisationId/providers/:providerId', checkHasAnswers, (
   })
 })
 
-router.post('/register/:organisationId/providers/:providerId', checkHasAnswers, (req, res) => {
+router.post('/organisations/:organisationId/providers/:providerId', checkHasAnswers, (req, res) => {
   // get the position of the current provider id
   const position = req.session.data.registration.trainingProvidersIds.indexOf(req.params.providerId)
 
@@ -135,7 +128,7 @@ router.post('/register/:organisationId/providers/:providerId', checkHasAnswers, 
 
   if (req.query.referer == 'check-your-answers') {
     // redirect to the data sharing agreement
-    res.redirect(`/register/${req.params.organisationId}/check-your-answers`)
+    res.redirect(`/${req.feature}/${req.version}/organisations/${req.params.organisationId}/check-your-answers`)
   } else {
     // if we've reached the last provider, move to the next step, else next continue with the providers
     if (position == (req.session.data.registration.trainingProviders.length - 1)) {
@@ -143,30 +136,30 @@ router.post('/register/:organisationId/providers/:providerId', checkHasAnswers, 
       req.session.data.registration.lastTrainingProviderId = req.params.providerId
 
       // redirect to the data sharing agreement
-      res.redirect(`/register/${req.params.organisationId}/agreement`)
+      res.redirect(`/${req.feature}/${req.version}/organisations/${req.params.organisationId}/agreement`)
 
     } else {
       // set the next training provider id
       const nextTrainingProviderId = req.session.data.registration.trainingProvidersIds[position + 1]
 
-      res.redirect(`/register/${req.params.organisationId}/providers/${nextTrainingProviderId}`)
+      res.redirect(`/${req.feature}/${req.version}/organisations/${req.params.organisationId}/providers/${nextTrainingProviderId}`)
     }
   }
 })
 
-router.get('/register/:organisationId/agreement', checkHasAnswers, (req, res) => {
+router.get('/organisations/:organisationId/agreement', checkHasAnswers, (req, res) => {
   const lastTrainingProviderId = req.session.data.registration.lastTrainingProviderId
 
-  res.render('register/v1/agreement', {
+  res.render(`./${req.feature}/${req.version}/agreement`, {
     actions: {
-      save: `/register/${req.params.organisationId}/agreement`,
-      back: `/register/${req.params.organisationId}/providers/${lastTrainingProviderId}`
+      save: `/${req.feature}/${req.version}/organisations/${req.params.organisationId}/agreement`,
+      back: `/${req.feature}/${req.version}/organisations/${req.params.organisationId}/providers/${lastTrainingProviderId}`
     },
     accreditingBody: req.session.data.registration.accreditingBody
   })
 })
 
-router.post('/register/:organisationId/agreement', checkHasAnswers, (req, res) => {
+router.post('/organisations/:organisationId/agreement', checkHasAnswers, (req, res) => {
   const errors = []
 
   if (req.session.data.registration.acceptAgreement === undefined) {
@@ -180,34 +173,36 @@ router.post('/register/:organisationId/agreement', checkHasAnswers, (req, res) =
   if (errors.length) {
     const lastTrainingProviderId = req.session.data.registration.lastTrainingProviderId
 
-    res.render('register/v1/agreement', {
+    res.render(`./${req.feature}/${req.version}/agreement`, {
       actions: {
-        save: `/register/${req.params.organisationId}/agreement`,
-        back: `/register/${req.params.organisationId}/providers/${lastTrainingProviderId}`
+        save: `/${req.feature}/${req.version}organisations/${req.params.organisationId}/agreement`,
+        back: `/${req.feature}/${req.version}/organisations/${req.params.organisationId}/providers/${lastTrainingProviderId}`
       },
       accreditingBody: req.session.data.registration.accreditingBody,
       errors: errors
     })
   } else {
-    res.redirect(`/register/${req.params.organisationId}/check-your-answers`)
+    res.redirect(`/${req.feature}/${req.version}/organisations/${req.params.organisationId}/check-your-answers`)
   }
 })
 
-router.get('/register/:organisationId/check-your-answers', checkHasAnswers, (req, res) => {
-  res.render('register/v1/check-your-answers', {
+router.get('/organisations/:organisationId/check-your-answers', checkHasAnswers, (req, res) => {
+  res.render(`./${req.feature}/${req.version}/check-your-answers`, {
     actions: {
-      next: `/register/${req.params.organisationId}/done`,
-      back: `/register/${req.params.organisationId}/agreement`
+      next: `/${req.feature}/${req.version}/organisations/${req.params.organisationId}/done`,
+      back: `/${req.feature}/${req.version}/organisations/${req.params.organisationId}/agreement`
     },
     registration: req.session.data.registration
   })
 })
 
-router.get('/register/:organisationId/done', checkHasAnswers, (req, res) => {
+router.get('/organisations/:organisationId/done', checkHasAnswers, (req, res) => {
   // set invitation count for use in pluralising content
   const trainingProviderInviteCount = req.session.data.registration.trainingProviders.filter(org => org.onboard == 'yes').length
 
-  res.render('register/v1/done', {
+  res.render(`./${req.feature}/${req.version}/done`, {
     trainingProviderInviteCount
   })
 })
+
+module.exports = router

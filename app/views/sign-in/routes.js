@@ -20,15 +20,15 @@ router.post('/auth', (req, res) => {
     account: `/${req.feature}/account`
   }
   req.session.data.isAuthenticated = true
-  res.redirect(`/${req.feature}/agreement`)
+  res.redirect(`/${req.feature}/done`)
 })
 
 router.get('/register', (req, res) => {
   res.render(`./${req.feature}/register`, {
     actions: {
       save: `/${req.feature}/register`,
-      back: `/${req.feature}/sign-in`,
-      signin: `/${req.feature}/sign-in`,
+      back: `/${req.feature}/`,
+      signin: `/${req.feature}/`,
       terms: `/${req.feature}/terms`
     }
   })
@@ -76,7 +76,7 @@ router.post('/confirm-email', (req, res) => {
       errors
     })
   } else {
-    res.redirect(`/${req.feature}/sign-in`)
+    res.redirect(`/${req.feature}/done`)
   }
 })
 
@@ -99,7 +99,7 @@ router.get('/forgotten-password', (req, res) => {
   res.render(`./${req.feature}/forgotten-password`, {
     actions: {
       save: `/${req.feature}/forgotten-password`,
-      back: `/${req.feature}/sign-in`
+      back: `/${req.feature}/`
     }
   })
 })
@@ -119,7 +119,7 @@ router.get('/verification-code', (req, res) => {
   res.render(`./${req.feature}/verification-code`, {
     actions: {
       save: `/${req.feature}/verification-code`,
-      back: `/${req.feature}/sign-in`
+      back: `/${req.feature}/`
     }
   })
 })
@@ -139,7 +139,7 @@ router.post('/verification-code', (req, res) => {
     res.render(`./${req.feature}/verification-code`, {
       actions: {
         save: `/${req.feature}/verification-code`,
-        back: `/${req.feature}/sign-in`
+        back: `/${req.feature}/`
       },
       errors
     })
@@ -152,7 +152,7 @@ router.get('/create-password', (req, res) => {
   res.render(`./${req.feature}/create-password`, {
     actions: {
       save: `/${req.feature}/create-password`,
-      back: `/${req.feature}/sign-in`
+      back: `/${req.feature}/`
     }
   })
 })
@@ -166,7 +166,7 @@ router.post('/create-password', (req, res) => {
 router.get('/password-reset', (req, res) => {
   res.render(`./${req.feature}/password-reset`, {
     actions: {
-      next: `/${req.feature}/sign-in`
+      next: `/${req.feature}/`
     }
   })
 })
@@ -176,6 +176,12 @@ router.get('/terms', (req, res) => {
     actions: {
       back: req.headers.referer
     }
+  })
+})
+
+router.get('/done', (req, res) => {
+  res.render(`./${req.feature}/done`, {
+    
   })
 })
 
