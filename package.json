@@ -19,6 +19,7 @@
     "body-parser": "^1.14.1",
     "browser-sync": "^2.11.1",
     "client-sessions": "^0.8.0",
+    "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.5",
     "cross-spawn": "^7.0.2",
     "csv-string": "^4.0.1",

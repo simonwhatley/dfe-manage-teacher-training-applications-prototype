@@ -14,7 +14,7 @@ router.get('/', (req, res) => {
 
 // Sign-in flow
 router.use('/sign-in/', (req, res, next) => {
-  require(`./views/sign-in/routes`)(req, res, next)
+  require('./views/sign-in/routes')(req, res, next)
 })
 
 // Onboarding flow

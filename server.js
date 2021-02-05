@@ -6,6 +6,7 @@ const path = require('path')
 const bodyParser = require('body-parser')
 const dotenv = require('dotenv')
 const express = require('express')
+const flash = require('connect-flash')
 const nunjucks = require('nunjucks')
 const sessionInCookie = require('client-sessions')
 const sessionInMemory = require('express-session')
@@ -196,6 +197,8 @@ if (useCookieSessionStore === 'true') {
     saveUninitialized: false
   })))
 }
+
+app.use(flash())
 
 // Automatically store all data users enter
 if (useAutoStoreData === 'true') {

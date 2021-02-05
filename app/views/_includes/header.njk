@@ -1,0 +1,20 @@
+{% set alertsLinkHtml %}
+  <span class="app-notification-link">
+    <span class="app-notification-link__text">Notifications</span><span class="app-notification-link__number">7</span>
+  </span>
+{% endset %}
+
+{{ govukHeader({
+  containerClasses: "govuk-width-container",
+  "navigationClasses": "govuk-header__navigation--end",
+  "productName": serviceName,
+  "navigation": [{
+      href: "/account",
+      text: "Your account",
+      active: primaryNavId == 'account'
+    }, {
+      href: "/",
+      text: "Sign out"
+    }
+  ]
+}) }}
