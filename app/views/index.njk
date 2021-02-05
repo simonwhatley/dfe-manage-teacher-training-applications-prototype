@@ -1,0 +1,45 @@
+
+{% extends "layout.njk" %}
+
+{% set title = "Prototype archive" %}
+
+{% block pageTitle %}
+  {{ title }} – {{ serviceName }}
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      
+      <h1 class="govuk-heading-xl">{{ serviceName }}</h1>
+      
+      <h2 class="govuk-heading-l">DfE Sign-in</h2>
+      
+      <ul class="govuk-list govuk-list--bullet">
+        <li>
+          <a class="govuk-link govuk-link--no-visited-state" href="/sign-in/">DfE Sign-in</a>
+        </li>
+      </ul>
+      
+      <h2 class="govuk-heading-l">Onboarding</h2>
+      
+      <ul class="govuk-list govuk-list--bullet">
+        <li>
+          <a class="govuk-link govuk-link--no-visited-state" href="/register/v1/">Version 1</a>
+        </li>
+        <li>
+          <a class="govuk-link govuk-link--no-visited-state" href="/register/v2/">Version 2</a>
+        </li>
+        <li>
+          <a class="govuk-link govuk-link--no-visited-state" href="/register/v3/">Version 3</a>
+        </li>
+        <li>
+          <a class="govuk-link govuk-link--no-visited-state" href="/register/v4/">Version 4</a>
+        </li>
+      </ul>
+      
+    </div>
+  </div>
+
+{% endblock %}
