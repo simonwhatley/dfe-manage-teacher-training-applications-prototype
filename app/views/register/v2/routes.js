@@ -41,7 +41,7 @@ router.get('/', (req, res) => {
   delete req.session.data.registration
   delete req.session.data.referer
 
-  res.render(`${req.feature}/${req.version}/index`, {
+  res.render('register/v2/index', {
     actions: {
       start: `/${req.feature}/${req.version}/organisations`
     },
@@ -81,7 +81,7 @@ router.get('/organisations/:organisationId/start', (req, res) => {
 
 console.log(req.session.data.registration);
 
-  res.render(`${req.feature}/${req.version}/start`, {
+  res.render('register/v2/start', {
     actions: {
       next: `/${req.feature}/${req.version}/organisations/${req.params.organisationId}/providers`
     },
@@ -95,7 +95,7 @@ router.get('/organisations/:organisationId/providers', (req, res) => {
     delete req.session.data.button
   }
 
-  res.render(`${req.feature}/${req.version}/providers`, {
+  res.render('register/v2/providers', {
     actions: {
       courses: `/${req.feature}/${req.version}/organisations/${req.params.organisationId}/providers/`,
       users: `/${req.feature}/${req.version}/organisations/${req.params.organisationId}/providers/`,
@@ -139,7 +139,7 @@ router.get('/organisations/:organisationId/providers/:providerId', checkHasAnswe
     }
   }
 
-  res.render(`${req.feature}/${req.version}/provider`, {
+  res.render('register/v2/provider', {
     actions: {
       save: save,
       back: back
@@ -231,7 +231,7 @@ router.get('/organisations/:organisationId/providers/:providerId/users', checkHa
     back = `/${req.feature}/${req.version}/organisations/${req.params.organisationId}/check-your-answers`
   }
 
-  res.render(`${req.feature}/${req.version}/users`, {
+  res.render('register/v2/users', {
     actions: {
       save: save,
       back: back
@@ -309,7 +309,7 @@ router.post('/organisations/:organisationId/providers/:providerId/users', checkH
 router.get('/organisations/:organisationId/agreement', checkHasAnswers, (req, res) => {
   const previousTrainingProviderId = req.session.data.registration.previousTrainingProviderId
 
-  res.render(`${req.feature}/${req.version}/agreement`, {
+  res.render('register/v2/agreement', {
     actions: {
       save: `/${req.feature}/${req.version}/organisations/${req.params.organisationId}/agreement`,
       back: `/${req.feature}/${req.version}/organisations/${req.params.organisationId}/providers/${previousTrainingProviderId}`
@@ -331,7 +331,7 @@ router.post('/organisations/:organisationId/agreement', checkHasAnswers, (req, r
 
   if (errors.length) {
 
-    res.render(`${req.feature}/${req.version}/agreement`, {
+    res.render('register/v2/agreement', {
       actions: {
         save: `/${req.feature}/${req.version}/organisations/${req.params.organisationId}/agreement`,
         back: `/${req.feature}/${req.version}/organisations/${req.params.organisationId}/providers`
@@ -353,7 +353,7 @@ router.get('/organisations/:organisationId/check-your-answers', checkHasAnswers,
     delete req.session.data.referer
   }
 
-  res.render(`${req.feature}/${req.version}/check-your-answers`, {
+  res.render('register/v2/check-your-answers', {
     actions: {
       next: `/${req.feature}/${req.version}/organisations/${req.params.organisationId}/done`,
       back: `/${req.feature}/${req.version}/organisations/${req.params.organisationId}/agreement`,
@@ -367,7 +367,7 @@ router.get('/organisations/:organisationId/done', checkHasAnswers, (req, res) =>
   // set invitation count for use in pluralising content
   const trainingProviderInviteCount = req.session.data.registration.trainingProviders.filter(org => org.onboard == 'yes').length
 
-  res.render(`${req.feature}/${req.version}/done`, {
+  res.render('register/v2/done', {
     trainingProviderInviteCount
   })
 })
