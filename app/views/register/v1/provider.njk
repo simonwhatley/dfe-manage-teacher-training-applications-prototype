@@ -65,12 +65,12 @@
               conditional: {
                 html: contactHtml
               },
-              checked: "true" if trainingProvider.onboard == "yes"
+              checked: true if trainingProvider.onboard == "yes"
             },
             {
               value: "no",
               text: "No",
-              checked: "true" if trainingProvider.onboard == "no"
+              checked: true if trainingProvider.onboard == "no"
             }
           ]
         }) }}
