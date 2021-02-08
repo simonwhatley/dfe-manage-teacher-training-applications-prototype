@@ -1,3 +1,5 @@
+const _ = require('lodash');
+
 module.exports = function (env) {
   /**
    * Instantiate object used to store the methods registered as a

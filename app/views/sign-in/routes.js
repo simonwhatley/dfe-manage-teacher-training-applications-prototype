@@ -36,7 +36,7 @@ router.get('/register', (req, res) => {
 
 router.post('/register', (req, res) => {
   const errors = []
-
+  
   req.flash('success', {
     title: 'Verification email sent',
     description: 'A verification email has been sent to ' + req.session.data.email

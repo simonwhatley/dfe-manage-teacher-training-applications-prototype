@@ -41,7 +41,7 @@
     "inquirer": "^7.1.0",
     "js-yaml": "^3.14.0",
     "keypather": "^3.0.0",
-    "lodash": "^4.17.19",
+    "lodash": "^4.17.20",
     "marked": "^1.2.0",
     "moment": "^2.27.0",
     "notifications-node-client": "^4.7.2",
