@@ -17,7 +17,7 @@
       <ul class="govuk-list">
         {% for organisation in organisations %}
           <li>
-            <a href="/register2/{{ organisation.id }}/start">{{ organisation.name }}</a>
+            <a href="{{ actions.start }}/{{ organisation.id }}/start">{{ organisation.name }}</a>
           </li>
         {% endfor %}
       </ul>

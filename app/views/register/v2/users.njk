@@ -64,7 +64,7 @@
                 hint: {
                   text: trainingProvider.users[0].email
                 },
-                checked: checked(trainingProvider.contact.choice, "0")
+                checked: true if trainingProvider.contact.choice == "0"
               } if trainingProvider.users[0] | length,
               {
                 value: "1",
@@ -72,7 +72,7 @@
                 hint: {
                   text: trainingProvider.users[1].email
                 },
-                checked: checked(trainingProvider.contact.choice, "1")
+                checked: true if trainingProvider.contact.choice == "1"
               } if trainingProvider.users[1] | length,
               {
                 value: "2",
@@ -80,7 +80,7 @@
                 hint: {
                   text: trainingProvider.users[2].email
                 },
-                checked: checked(trainingProvider.contact.choice, "2")
+                checked: true if trainingProvider.contact.choice == "2"
               } if trainingProvider.users[2] | length,
               {
                 value: "3",
@@ -88,7 +88,7 @@
                 hint: {
                   text: trainingProvider.users[3].email
                 },
-                checked: checked(trainingProvider.contact.choice, "3")
+                checked: true if trainingProvider.contact.choice == "3"
               } if trainingProvider.users[3] | length,
               {
                 value: "4",
@@ -96,7 +96,7 @@
                 hint: {
                   text: trainingProvider.users[4].email
                 },
-                checked: checked(trainingProvider.contact.choice, "4")
+                checked: true if trainingProvider.contact.choice == "4"
               } if trainingProvider.users[4] | length,
               {
                 value: "5",
@@ -104,7 +104,7 @@
                 hint: {
                   text: trainingProvider.users[5].email
                 },
-                checked: checked(trainingProvider.contact.choice, "5")
+                checked: true if trainingProvider.contact.choice == "5"
               } if trainingProvider.users[5] | length,
               {
                 value: "other",
@@ -112,7 +112,7 @@
                 conditional: {
                   html: contactHtml
                 },
-                checked: checked(trainingProvider.contact.choice, "other")
+                checked: true if trainingProvider.contact.choice == "other"
               }
             ]
           }) }}
