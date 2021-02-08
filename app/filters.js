@@ -1,3 +1,5 @@
+const _ = require('lodash');
+
 module.exports = function (env) {
   /**
    * Instantiate object used to store the methods registered as a
@@ -5,38 +7,41 @@ module.exports = function (env) {
    * gov.uk core filters by creating filter methods of the same name.
    * @type {Object}
    */
-  var filters = {}
+  const filters = {}
+  
+  /* ------------------------------------------------------------------
+  utility function to return true or false
+  example: {{ 'yes' | falsify }}
+  outputs: true
+  ------------------------------------------------------------------ */
+  filters.falsify = (input) => {
+    if (_.isNumber(input)) return input
+    else if (input == false) return false
+    if (_.isString(input)){
+      const truthyValues = ['yes','true']
+      const falsyValues = ['no', 'false']
+      if (truthyValues.includes(input.toLowerCase())) return true
+      else if (falsyValues.includes(input.toLowerCase())) return false
+    }
+    return input
+  }
 
   /* ------------------------------------------------------------------
-    add your methods to the filters obj below this comment block:
-    @example:
-
-    filters.sayHi = function(name) {
-        return 'Hi ' + name + '!'
-    }
-
-    Which in your templates would be used as:
-
-    {{ 'Paul' | sayHi }} => 'Hi Paul'
-
-    Notice the first argument of your filters method is whatever
-    gets 'piped' via '|' to the filter.
-
-    Filters can take additional arguments, for example:
-
-    filters.sayHi = function(name,tone) {
-      return (tone == 'formal' ? 'Greetings' : 'Hi') + ' ' + name + '!'
-    }
-
-    Which would be used like this:
-
-    {{ 'Joel' | sayHi('formal') }} => 'Greetings Joel!'
-    {{ 'Gemma' | sayHi }} => 'Hi Gemma!'
-
-    For more on filters and how to write them see the Nunjucks
-    documentation.
-
+  utility function to get an error for a component
+  example: {{ errors | getErrorMessage('title') }}
+  outputs: "Enter a title"
   ------------------------------------------------------------------ */
+  filters.getErrorMessage = function (array, fieldName) {
+    if (!array || !fieldName) {
+      return null
+    }
+
+    const error = array.filter((obj) =>
+      obj.fieldName === fieldName
+    )[0]
+
+    return error
+  }
 
   /* ------------------------------------------------------------------
     keep the following line to return your filters to the app

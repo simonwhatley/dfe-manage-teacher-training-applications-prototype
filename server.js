@@ -6,6 +6,7 @@ const path = require('path')
 const bodyParser = require('body-parser')
 const dotenv = require('dotenv')
 const express = require('express')
+const flash = require('connect-flash')
 const nunjucks = require('nunjucks')
 const sessionInCookie = require('client-sessions')
 const sessionInMemory = require('express-session')
@@ -107,7 +108,7 @@ var nunjucksAppEnv = nunjucks.configure(appViews, nunjucksConfig)
 utils.addNunjucksFilters(nunjucksAppEnv)
 
 // Set views engine
-app.set('view engine', 'html')
+app.set('view engine', 'njk')
 
 // Middleware to serve static assets
 app.use('/public', express.static(path.join(__dirname, '/public')))
@@ -196,6 +197,8 @@ if (useCookieSessionStore === 'true') {
     saveUninitialized: false
   })))
 }
+
+app.use(flash())
 
 // Automatically store all data users enter
 if (useAutoStoreData === 'true') {
