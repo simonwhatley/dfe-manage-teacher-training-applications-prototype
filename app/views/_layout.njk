@@ -46,71 +46,33 @@
   {% if shouldShowCookieMessage %}
   {{ appCookieBanner({
     text: cookieText
-  })}}
+  }) }}
   {% endif %}
 
-  {% include "_includes/header.njk" %}
+  {{ govukHeader({
+    containerClasses: "govuk-width-container {{- ' ' + containerClasses if containerClasses }}",
+    "navigation": [{
+        href: data.routes.account,
+        text: "Your account",
+        active: primaryNavId == 'account'
+      } if data.routes.account | length,
+      {
+        href: data.routes.signout,
+        text: "Sign out"
+      } if data.routes.signout | length
+    ] if data.isAuthenticated
+  }) }}
+  
+  <!-- "productName": serviceName, -->
 
-<div class="app-phase-banner__wrapper">
-
-  <div class="govuk-phase-banner app-phase-banner govuk-width-container">
-    <p class="govuk-phase-banner__content">
-      <strong class="govuk-tag govuk-phase-banner__content__tag">
-        beta
-      </strong>
-      <span class="govuk-phase-banner__text">
-        This is a new service – your <a class="govuk-link" href="/get-in-touch">feedback</a> will help us to improve it.
-      </span>
-    </p>
-  </div>
-
-</div>
-
-{% set rightHandSideNavHtml %}
-  <nav class="app-primary-navigation">
-    <ul class="app-primary-navigation__list">
-      <li class="app-primary-navigation__item">
-        <a class="app-primary-navigation__link" {{ 'aria-current="page"' | safe if primaryNavId == 'export' }} href="/export">
-          Export data
-        </a>
-      </li>
-    </ul>
-
-  </nav>
-{% endset %}
-
-{% set alertsLinkHtml %}
-  <span class="app-notification-link">
-    <span class="app-notification-link__text">Notifications</span><span class="app-notification-link__number">7</span>
-  </span>
-{% endset %}
-
-{#{ appPrimaryNavigation({
-  label: 'Primary navigation',
-  items: [
-    {
-      href: "/",
-      text: "Applications",
-      active: primaryNavId == 'applications'
+  {{ govukPhaseBanner({
+    tag: {
+      text: "Prototype",
+      classes: "app-tag--prototype"
     },
-    {
-      href: "/interviews",
-      text: "Interview schedule",
-      active: primaryNavId == 'interviews'
-    },
-    {
-      href: "/activity",
-      text: "Activity log",
-      active: primaryNavId == 'activity'
-    },
-    {
-      href: "/notifications",
-      html: alertsLinkHtml,
-      active: primaryNavId == 'notifications'
-    } if 1 == 2
-  ],
-  searchHtml: rightHandSideNavHtml
-}) }#}
+    html: 'This is a new service – your <a class="govuk-link" href="#">feedback</a> will help us to improve it.',
+    classes: "govuk-width-container"
+  }) }}
 
   {% block afterHeader %}
 
@@ -119,7 +81,6 @@
 {% endblock %}
 
 {% block bodyStart %}
-  <div data-module="edge">
 {% endblock %}
 
 {% block beforeContent %}
@@ -143,32 +104,34 @@
     classes: "govuk-footer--app",
     meta: {
       title: "Support and guidance",
-      html: "If you have a question, or you’ve had a problem using this service, please email us at <a href=\"mailto:becomingateacher@digital.education.gov.uk\">becomingateacher@digital.education.gov.uk</a>",
-      items: [{
-        href: "/admin/settings",
-        text: "Settings"
-      }, {
-        href: "/admin/clear-data",
-        text: "Clear data"
-      } if not urStudy, {
-        href: "/onboard-notifications",
-        text: "Sign in notification prompt"
-      }, {
-        href: "/onboard",
-        text: "Sign in permissions prompt"
-      }, {
-        href: "/email/candidate-accepted-offer",
-        text: "Email: Candidate accepted offer"
-      }, {
-        href: "/email/candidate-declined-offer",
-        text: "Email: Candidate declined offer"
-      }]
+      html: "If you have a question, or you’ve had a problem using this service, please email us at <a href=\"mailto:becomingateacher@digital.education.gov.uk\">becomingateacher@digital.education.gov.uk</a>"
     }
   }) if not data.bare }}
+  
+  <!-- ,
+  items: [{
+    href: "/admin/settings",
+    text: "Settings"
+  }, {
+    href: "/admin/clear-data",
+    text: "Clear data"
+  } if not urStudy, {
+    href: "/onboard-notifications",
+    text: "Sign in notification prompt"
+  }, {
+    href: "/onboard",
+    text: "Sign in permissions prompt"
+  }, {
+    href: "/email/candidate-accepted-offer",
+    text: "Email: Candidate accepted offer"
+  }, {
+    href: "/email/candidate-declined-offer",
+    text: "Email: Candidate declined offer"
+  }] -->
+  
 {% endblock %}
 
 {% block bodyEnd %}
-  </div>
 
   {% block scripts %}
     {{ data | log }}

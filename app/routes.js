@@ -9,6 +9,7 @@ router.use('/', (req, res, next) => {
 
 // Route index page
 router.get('/', (req, res) => {
+  delete req.session.data
   res.render('index')
 })
 
