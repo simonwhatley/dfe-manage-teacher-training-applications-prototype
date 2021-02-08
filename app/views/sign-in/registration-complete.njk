@@ -1,6 +1,6 @@
 {% extends "_layout-register.njk" %}
 
-{% set title = "Password has been reset"  %}
+{% set title = "Your DfE Sign-in account has been created"  %}
 
 {% block pageTitle %}
 {{ title }} – {{ serviceName }} – GOV.UK
@@ -20,8 +20,6 @@
       {{ govukPanel({
         titleText: title
       }) }}
-
-      <p class="govuk-body">Your password has been reset and can now be used to access your DfE Sign-in account.</p>
 
       {{ govukButton({
         text: "Sign in with DfE Sign-in",

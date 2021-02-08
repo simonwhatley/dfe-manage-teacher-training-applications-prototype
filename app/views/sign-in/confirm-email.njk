@@ -3,7 +3,7 @@
 {% set title = "Confirm your email address"  %}
 
 {% block pageTitle %}
-{{ title }} – {{ serviceName }} – GOV.UK
+{{ 'Error: ' if errors.length}} {{- title }} – {{ serviceName }} – GOV.UK
 {% endblock %}
 
 {% block beforeContent %}
@@ -40,6 +40,7 @@
               classes: "govuk-label--s"
             },
             errorMessage: errors | getErrorMessage("code"),
+            value: data.code,
             classes: "govuk-!-width-one-quarter"
           }) }}
 

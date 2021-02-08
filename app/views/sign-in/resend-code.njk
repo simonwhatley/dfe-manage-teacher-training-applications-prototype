@@ -3,7 +3,7 @@
 {% set title = "Resend verification email"  %}
 
 {% block pageTitle %}
-{{ title }} – {{ serviceName }} – GOV.UK
+{{ 'Error: ' if errors.length}} {{- title }} – {{ serviceName }} – GOV.UK
 {% endblock %}
 
 {% block beforeContent %}
@@ -14,6 +14,9 @@
 {% endblock %}
 
 {% block content %}
+
+  {% include "./_error-summary.njk" %}
+  
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
@@ -32,13 +35,15 @@
           {{ govukInput({
             id: "email",
             name: "email",
+            type: "email",
+            inputmode: "email",
             label: {
               text: "Email address",
               classes: "govuk-label--s"
             },
+            errorMessage: errors | getErrorMessage("email"),
             value: data.email,
             classes: "govuk-!-width-two-thirds",
-            inputmode: "email",
             spellcheck: false
           }) }}
 

@@ -32,13 +32,14 @@
           {{ govukInput({
             id: "email",
             name: "email",
+            type: "email",
+            inputmode: "email",
             label: {
               text: "Email address",
               classes: "govuk-label--s"
             },
             value: data.email,
             classes: "govuk-!-width-two-thirds",
-            inputmode: "email",
             spellcheck: false
           }) }}
 

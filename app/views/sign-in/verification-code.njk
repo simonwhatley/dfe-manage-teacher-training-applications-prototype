@@ -3,7 +3,7 @@
 {% set title = "Enter your verification code"  %}
 
 {% block pageTitle %}
-{{ title }} – {{ serviceName }} – GOV.UK
+{{ 'Error: ' if errors.length}} {{- title }} – {{ serviceName }} – GOV.UK
 {% endblock %}
 
 {% block beforeContent %}
@@ -39,6 +39,7 @@
               text: "Verification code",
               classes: "govuk-label--s"
             },
+            value: data.code,
             errorMessage: errors | getErrorMessage("code"),
             classes: "govuk-!-width-one-quarter"
           }) }}
