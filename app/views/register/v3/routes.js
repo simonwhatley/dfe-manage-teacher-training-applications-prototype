@@ -206,7 +206,8 @@ router.get('/organisations/:organisationId/check-your-answers', checkHasAnswers,
   res.render('register/v3/check-your-answers', {
     actions: {
       next: `/${req.feature}/${req.version}/organisations/${req.params.organisationId}/done`,
-      back: `/${req.feature}/${req.version}/organisations/${req.params.organisationId}/agreement`
+      back: `/${req.feature}/${req.version}/organisations/${req.params.organisationId}/agreement`,
+      change: `/${req.feature}/${req.version}/organisations`
     },
     accreditingBody: req.session.data.registration.accreditingBody,
     trainingProviders: req.session.data.registration.trainingProvidersNotOnboarded,
