@@ -16,7 +16,7 @@
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-
+      
       <!-- <span class="govuk-caption-l">{{ accreditingBody.name }}</span> -->
 
       <form action="{{ actions.save }}" method="post" novalidate>
@@ -65,12 +65,12 @@
               conditional: {
                 html: contactHtml
               },
-              checked: checked(trainingProvider.onboard, "yes")
+              checked: "true" if trainingProvider.onboard == "yes"
             },
             {
               value: "no",
               text: "No",
-              checked: checked(trainingProvider.onboard, "no")
+              checked: "true" if trainingProvider.onboard == "no"
             }
           ]
         }) }}

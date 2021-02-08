@@ -26,7 +26,7 @@ function getTrainingProvidersIds (data) {
 router.get('/', (req, res) => {
   // delete any previous onboarding data
   delete req.session.data.registration
-
+  
   res.render(`./${req.feature}/${req.version}/index`, {
     actions: {
       start: `/${req.feature}/${req.version}/organisations`

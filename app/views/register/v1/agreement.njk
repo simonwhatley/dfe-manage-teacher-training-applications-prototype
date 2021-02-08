@@ -273,7 +273,7 @@
               {
                 value: "yes",
                 text: accreditingBody.name + " agrees to comply with the data sharing practices outlined in this agreement",
-                checked: checked(data.registration.acceptAgreement, "yes")
+                checked: "true" if data.registration.acceptAgreement == "yes"
               }
             ],
             errorMessage: errors | getErrorMessage("acceptAgreement")
