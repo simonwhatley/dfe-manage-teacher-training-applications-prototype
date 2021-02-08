@@ -44,9 +44,9 @@
 
 {% block header %}
   {% if shouldShowCookieMessage %}
-  {{ appCookieBanner({
+  {#{ appCookieBanner({
     text: cookieText
-  }) }}
+  }) }#}
   {% endif %}
 
   {{ govukHeader({
