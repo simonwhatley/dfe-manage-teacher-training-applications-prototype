@@ -26,7 +26,10 @@ router.use(/\/register\/v([0-9]+)/, (req, res, next) => {
   require(`./views/register/v${req.params[0]}/routes`)(req, res, next)
 })
 
-
+// Statistics reports
+router.use(/\/statistics\/v([0-9]+)/, (req, res, next) => {
+  require(`./views/statistics/v${req.params[0]}/routes`)(req, res, next)
+})
 
 // Add your routes here - above the module.exports line
 
