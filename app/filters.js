@@ -42,6 +42,59 @@ module.exports = function (env) {
 
     return error
   }
+  
+  /* ------------------------------------------------------------------
+  utility function to get the statistics cycle label
+  example: {{ "2020 to 2021" | cycleText }}
+  outputs: "2020 to 2021 (starts 2021)"
+  ------------------------------------------------------------------ */
+  filters.cycleText = (cycle) => {
+    if(cycle == "2020 to 2021") {
+      return "2020 to 2021 (starts 2021)"
+    } else {
+      return "2019 to 2020 (starts 2020)"
+    }
+  }
+  
+  /* ------------------------------------------------------------------
+  utility function to get the statistics option label
+  example: {{ "cycle" | getStatisticsOptionLabel }}
+  outputs: "Year received"
+  ------------------------------------------------------------------ */
+  filters.getStatisticsOptionLabel = (option) => {
+    let label = ''
+    switch (option) {
+      case 'cycle':
+        label = 'Year received'
+        break
+      case 'status':
+        label = 'Status'
+        break
+      case 'subject':
+        label = 'Subject'
+        break
+      case 'studyMode':
+        label = 'Full time or part time'
+        break
+      case 'fundingType':
+        label = 'Fee paying or salaried'
+        break
+      case 'subjectLevel':
+        label = 'Primary or secondary'
+        break
+      case 'location':
+        label = 'Location'
+        break
+      case 'provider':
+      case 'trainingProvider':
+        label = 'Courses run by'
+        break
+      case 'accreditedBody':
+        label = 'Courses ratified by'
+        break
+    }
+    return label
+  }
 
   /* ------------------------------------------------------------------
     keep the following line to return your filters to the app

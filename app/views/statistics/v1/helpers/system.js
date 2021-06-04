@@ -3,6 +3,15 @@ const fs = require('fs')
 
 const dataDirectoryPath = path.join(__dirname, '../data/')
 
+const loadApplications = () => {
+  const filePath = dataDirectoryPath + '/applications.json'
+  const rawData = fs.readFileSync(filePath)
+  const applications = JSON.parse(rawData)
+  return applications
+}
+
+exports.loadApplications = loadApplications()
+
 exports.sex = [
   'Female',
   'Male'
