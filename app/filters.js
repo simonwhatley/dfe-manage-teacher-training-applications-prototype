@@ -95,6 +95,24 @@ module.exports = function (env) {
     }
     return label
   }
+  
+  /* ------------------------------------------------------------------
+  utility function to get the nationality label
+  example: {{ "Europe" | getNationalityLabel }}
+  outputs: "EU, Switzerland, Norway, Iceland or Liechtenstein (not Ireland)"
+  ------------------------------------------------------------------ */
+  filters.getNationalityLabel = (nationality) => {
+    switch (nationality) {
+      case 'British':
+      case 'British (Dual)':
+      case 'Irish':
+        return nationality
+      case 'Europe':
+        return 'EU, Switzerland, Norway, Iceland or Liechtenstein (not Ireland)'
+      case 'Rest of world':
+        return 'Somewhere else'
+    }
+  }
 
   /* ------------------------------------------------------------------
     keep the following line to return your filters to the app

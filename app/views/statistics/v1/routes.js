@@ -403,5 +403,4 @@ router.get('/remove-all-filters', (req, res) => {
   res.redirect(getRedirect(req.headers.referer))
 })
 
-
 module.exports = router
