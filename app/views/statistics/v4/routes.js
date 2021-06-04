@@ -187,6 +187,38 @@ router.get('/', (req, res) => {
   })
 })
 
+router.get('/metrics', (req, res) => {
+  delete req.session.data.statisticsOptions
+  delete req.session.data.statisticsFilters
+  
+  if (!req.session.data.applications) {
+    req.session.data.applications = SystemHelper.loadApplications
+  }
+  
+  const applications = req.session.data.applications
+  const current = applications.filter(application => application.cycle === '2020 to 2021')
+  const previous = applications.filter(application => application.cycle === '2019 to 2020')
+  
+  res.render('statistics/v4/metrics', {
+    counts: {
+      current: {
+        total: current.length,
+        interviewing: current.filter(c => c.status === 'Awaiting decision').length,
+        offered: current.filter(c => c.status === 'Offered').length,
+        awaitingConditions: current.filter(c => c.status === 'Awaiting conditions').length,
+        readyToEnroll: current.filter(c => c.status === 'Ready to enroll').length
+      },
+      previous: {
+        total: previous.length,
+        interviewing: 22,
+        offered: 16,
+        awaitingConditions: 7,
+        readyToEnroll: 10
+      }
+    }
+  })
+})
+
 router.get('/courses', (req, res) => {
   if (!req.session.data.applications) {
     req.session.data.applications = SystemHelper.loadApplications
