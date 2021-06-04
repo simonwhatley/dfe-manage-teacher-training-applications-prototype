@@ -203,7 +203,7 @@ router.get('/metrics', (req, res) => {
     counts: {
       current: {
         total: current.length,
-        interviewing: current.filter(c => c.status === 'Awaiting decision').length,
+        interviewing: current.filter(c => c.status === 'Interviewing').length,
         offered: current.filter(c => c.status === 'Offered').length,
         awaitingConditions: current.filter(c => c.status === 'Awaiting conditions').length,
         readyToEnroll: current.filter(c => c.status === 'Ready to enroll').length
