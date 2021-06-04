@@ -25,7 +25,7 @@ const getFilters = (req) => {
 
   if (hasFilters) {
 
-    const slug = `/statistics/v3${req.route.path}`
+    const slug = `/statistics/v4${req.route.path}`
 
     selectedFilters = {
       categories: []
@@ -182,7 +182,7 @@ router.get('/', (req, res) => {
   delete req.session.data.statisticsOptions
   delete req.session.data.statisticsFilters
   
-  res.render('statistics/v3/index', {
+  res.render('statistics/v4/index', {
     
   })
 })
@@ -198,7 +198,7 @@ router.get('/courses', (req, res) => {
 
   // if the user hasn't configured the report to include cycle data,
   // we just want the current cycle's data
-  if (!options || !((options.dimension2 === 'cycle') || (options.dimension3 === 'cycle'))) {
+  if (!options || !((options.dimension2 === 'cycle') || (options.dimension3 === 'cycle') || (options.dimension4 === 'cycle'))) {
     applications = applications.filter(application => application.cycle === '2020 to 2021')
   }
 
@@ -214,31 +214,46 @@ router.get('/courses', (req, res) => {
     }
   }
 
+  // get the default counts for the report
   let counts = ApplicationHelper.getApplicationCountsBySubject(applications)
-  const dimension1 = ApplicationHelper.getDimensionData('subject').data
-  let dimension2 = []
-  let dimension3 = []
 
+  // get the counts based on the dimenstions chosen by the user
   if (options) {
     counts = ApplicationHelper.getApplicationCounts(applications, options)
+  }
+
+  // default dimension 1 to the subject (a proxy for course)
+  const dimension1 = ApplicationHelper.getDimensionData('subject').data
+
+  let dimension2 = []
+  if (options && options.dimension2) {
     dimension2 = ApplicationHelper.getDimensionData(options.dimension2).data
+  }
+
+  let dimension3 = []
+  if (options && options.dimension3) {
     dimension3 = ApplicationHelper.getDimensionData(options.dimension3).data
   }
 
-  // Dimension 2 and 4 are optional
+  let dimension4 = []
+  if (options && options.dimension4) {
+    dimension4 = ApplicationHelper.getDimensionData(options.dimension4).data
+  }
 
-  // | =============== | Dimension 3               | Dimension 3               |
-  // | =============== | Dimension 4 | Dimension 4 | Dimension 4 | Dimension 4 |
-  // | Dimension 1     | =========== | =========== | =========== | =========== |
-  // |  -- Dimension 2 | =========== | =========== | =========== | =========== |
-  // |  -- Dimension 2 | =========== | =========== | =========== | =========== |
-  // |  -- Dimension 2 | =========== | =========== | =========== | =========== |
-  // | Dimension 1     | =========== | =========== | =========== | =========== |
-  // |  -- Dimension 2 | =========== | =========== | =========== | =========== |
-  // |  -- Dimension 2 | =========== | =========== | =========== | =========== |
-  // |  -- Dimension 2 | =========== | =========== | =========== | =========== |
+  // Dimension 3 and 4 are optional
 
-  res.render('statistics/v3/courses', {
+  // | =============== | Dimension 2               | Dimension 2               |
+  // | =============== | Dimension 3 | Dimension 3 | Dimension 3 | Dimension 3 |
+  // | Dimension 1     | =========== | =========== | =========== | =========== |
+  // |  -- Dimension 4 | =========== | =========== | =========== | =========== |
+  // |  -- Dimension 4 | =========== | =========== | =========== | =========== |
+  // |  -- Dimension 4 | =========== | =========== | =========== | =========== |
+  // | Dimension 1     | =========== | =========== | =========== | =========== |
+  // |  -- Dimension 4 | =========== | =========== | =========== | =========== |
+  // |  -- Dimension 4 | =========== | =========== | =========== | =========== |
+  // |  -- Dimension 4 | =========== | =========== | =========== | =========== |
+
+  res.render('statistics/v4/courses', {
     section: 'applications',
     report: 'courses',
     totalApplications: applications.length,
@@ -246,6 +261,7 @@ router.get('/courses', (req, res) => {
     dimension1,
     dimension2,
     dimension3,
+    dimension4,
     counts,
     hasFilters: filters.hasFilters,
     selectedFilters: filters.selectedFilters,
@@ -257,18 +273,40 @@ router.get('/courses', (req, res) => {
 // Configure
 // ===========================================================================
 
-router.get('/:report/rows', (req, res) => {
-  res.render('statistics/v3/rows', {
+router.get('/:report/settings', (req, res) => {
+  if (!req.session.data.statisticsOptions) {
+    req.session.data.statisticsOptions = { dimension1: 'subject' }
+  }
+
+  const options = req.session.data.statisticsOptions
+
+  const chosenOptions = []
+  if (options) {
+    // parse the dimensions so we know what filters to show
+    for (const [key, value] of Object.entries(options)) {
+      chosenOptions.push(value)
+    }
+  }
+
+  let counter = 1
+  if (options) {
+    counter = chosenOptions.length + 1
+  }
+
+  res.render('statistics/v4/settings', {
     report: req.params.report,
-    reportName: 'Courses'
+    reportName: 'Courses',
+    counter,
+    chosenOptions
   })
 })
 
-router.get('/:report/columns', (req, res) => {
-  res.render('statistics/v3/columns', {
-    report: req.params.report,
-    reportName: 'Courses'
-  })
+router.post('/:report/settings', (req, res) => {
+  if (req.session.data.button.submit === 'continue') {
+    res.redirect(`/statistics/v4/${req.params.report}/settings`)
+  } else {
+    res.redirect(`/statistics/v4/${req.params.report}`)
+  }
 })
 
 // ===========================================================================
@@ -278,7 +316,7 @@ router.get('/:report/columns', (req, res) => {
 router.get('/:report/remove-all-settings', (req, res) => {
   delete req.session.data.statisticsOptions
   delete req.session.data.statisticsFilters
-  res.redirect(`/statistics/v3/${req.params.report}`)
+  res.redirect(`/statistics/v4/${req.params.report}`)
 })
 
 // ===========================================================================
@@ -287,42 +325,42 @@ router.get('/:report/remove-all-settings', (req, res) => {
 
 router.get('/:report/remove-cycle-filter/:cycle', (req, res) => {
   req.session.data.statisticsFilters.cycle = req.session.data.statisticsFilters.cycle.filter(item => item !== req.params.cycle)
-  res.redirect(`/statistics/v3/${req.params.report}`)
+  res.redirect(`/statistics/v4/${req.params.report}`)
 })
 
 router.get('/:report/remove-status-filter/:status', (req, res) => {
   req.session.data.statisticsFilters.status = req.session.data.statisticsFilters.status.filter(item => item !== req.params.status)
-  res.redirect(`/statistics/v3/${req.params.report}`)
+  res.redirect(`/statistics/v4/${req.params.report}`)
 })
 
 router.get('/:report/remove-provider-filter/:provider', (req, res) => {
   req.session.data.statisticsFilters.provider = req.session.data.statisticsFilters.provider.filter(item => item !== req.params.provider)
-  res.redirect(`/statistics/v3/${req.params.report}`)
+  res.redirect(`/statistics/v4/${req.params.report}`)
 })
 
 router.get('/:report/remove-accreditedbody-filter/:accreditedBody', (req, res) => {
   req.session.data.statisticsFilters.accreditedBody = req.session.data.statisticsFilters.accreditedBody.filter(item => item !== req.params.accreditedBody)
-  res.redirect(`/statistics/v3/${req.params.report}`)
+  res.redirect(`/statistics/v4/${req.params.report}`)
 })
 
 router.get('/:report/remove-studymode-filter/:studyMode', (req, res) => {
   req.session.data.statisticsFilters.studyMode = req.session.data.statisticsFilters.studyMode.filter(item => item !== req.params.studyMode)
-  res.redirect(`/statistics/v3/${req.params.report}`)
+  res.redirect(`/statistics/v4/${req.params.report}`)
 })
 
 router.get('/:report/remove-fundingtype-filter/:fundingType', (req, res) => {
   req.session.data.statisticsFilters.fundingType = req.session.data.statisticsFilters.fundingType.filter(item => item !== req.params.fundingType)
-  res.redirect(`/statistics/v3/${req.params.report}`)
+  res.redirect(`/statistics/v4/${req.params.report}`)
 })
 
 router.get('/:report/remove-subjectlevel-filter/:subjectLevel', (req, res) => {
   req.session.data.statisticsFilters.subjectLevel = req.session.data.statisticsFilters.subjectLevel.filter(item => item !== req.params.subjectLevel)
-  res.redirect(`/statistics/v3/${req.params.report}`)
+  res.redirect(`/statistics/v4/${req.params.report}`)
 })
 
 router.get('/:report/remove-location-filter/:location', (req, res) => {
   req.session.data.statisticsFilters.location = req.session.data.statisticsFilters.location.filter(item => item !== req.params.location)
-  res.redirect(`/statistics/v3/${req.params.report}`)
+  res.redirect(`/statistics/v4/${req.params.report}`)
 })
 
 router.get('/:report/remove-all-filters', (req, res) => {
@@ -334,7 +372,7 @@ router.get('/:report/remove-all-filters', (req, res) => {
   req.session.data.statisticsFilters.fundingType = null
   req.session.data.statisticsFilters.subjectLevel = null
   req.session.data.statisticsFilters.location = null
-  res.redirect(`/statistics/v3/${req.params.report}`)
+  res.redirect(`/statistics/v4/${req.params.report}`)
 })
 
 module.exports = router

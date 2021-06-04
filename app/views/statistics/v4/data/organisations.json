@@ -1,0 +1,32 @@
+[
+  {
+    "id": "f3f93c5d-805a-4390-bd59-5cb25b7a3627",
+    "name": "Wren Academy",
+    "isAccreditedBody": false
+  },
+  {
+    "id": "0df11db8-60b1-4471-bd42-363703d46f5a",
+    "name": "The Royal Borough Teaching School Alliance",
+    "isAccreditedBody": false
+  },
+  {
+    "id": "3c32043e-8d54-455a-b394-c8e5959755ec",
+    "name": "Springbank SCITT",
+    "isAccreditedBody": true
+  },
+  {
+    "id": "71772ffc-44a8-4045-8e9e-30c815e39d99",
+    "name": "Kingston University",
+    "isAccreditedBody": true
+  },
+  {
+    "id": "7badd2f6-e372-4251-b946-06307ae549c4",
+    "name": "Bedford University",
+    "isAccreditedBody": true
+  },
+  {
+    "id": "8e34dda3-adf3-4978-8b9c-d9daba7ab9d4",
+    "name": "Gorse SCITT",
+    "isAccreditedBody": true
+  }
+]
