@@ -1,0 +1,95 @@
+{% extends "_layout-statistics.njk" %}
+
+{% set primaryNavId = "statistics" %}
+{% set pageName = "Configure report columns" %}
+
+{% block beforeContent %}
+{{ govukBackLink({
+  text: "Back",
+  href: "/statistics/v3/" + report + "/configure/rows"
+}) }}
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <h1 class="govuk-heading-l">
+      <span class="govuk-caption-l">
+        {{ reportName | capitalize }}
+      </span>
+      {{ pageName }}
+    </h1>
+
+    <form action="/statistics/v3/{{ report }}" method="post" accept-charset="UTF-8" novalidate>
+
+      {{ govukRadios({
+        idPrefix: "statisticsOptions",
+        name: "statisticsOptions[dimension3]",
+        fieldset: {
+          legend: {
+            text: "Show data by",
+            classes: "govuk-fieldset__legend--m"
+          }
+        },
+        items: [
+          {
+            value: "cycle",
+            text: "Year received",
+            checked: true if data.statisticsOptions.dimension3 and data.statisticsOptions.dimension3 == "cycle"
+          } if data.statisticsOptions.dimension2 !== "cycle",
+          {
+            value: "status",
+            text: "Status",
+            checked: true if data.statisticsOptions.dimension3 and data.statisticsOptions.dimension3 == "status"
+          } if data.statisticsOptions.dimension2 !== "status",
+          {
+            value: "provider",
+            text: "Training provider",
+            checked: true if data.statisticsOptions.dimension3 and data.statisticsOptions.dimension3 == "provider"
+          } if data.statisticsOptions.dimension2 !== "provider",
+          {
+            value: "accreditedBody",
+            text: "Accredited body",
+            checked: true if data.statisticsOptions.dimension3 and data.statisticsOptions.dimension3 == "accreditedBody"
+          } if data.statisticsOptions.dimension2 !== "accreditedBody",
+          {
+            value: "location",
+            text: "Location",
+            checked: true if data.statisticsOptions.dimension3 and data.statisticsOptions.dimension3 == "location"
+          } if data.statisticsOptions.dimension2 !== "location",
+          {
+            value: "studyMode",
+            text: "Study mode",
+            checked: true if data.statisticsOptions.dimension3 and data.statisticsOptions.dimension3 == "studyMode"
+          } if data.statisticsOptions.dimension2 !== "studyMode",
+          {
+            value: "subjectLevel",
+            text: "Subject level",
+            checked: true if data.statisticsOptions.dimension3 and data.statisticsOptions.dimension3 == "subjectLevel"
+          } if data.statisticsOptions.dimension2 !== "subjectLevel",
+          {
+            value: "fundingType",
+            text: "Funding type",
+            checked: true if data.statisticsOptions.dimension3 and data.statisticsOptions.dimension3 == "fundingType"
+          } if data.statisticsOptions.dimension2 !== "fundingType"
+        ]
+      }) }}
+
+      {{ govukButton({
+        text: "Save settings and view report"
+      }) }}
+
+      <p class="govuk-body">
+        <a href="/statistics/{{ section }}/{{ report }}/remove-all-options">Cancel</a>
+      </p>
+
+    </form>
+
+  </div>
+  <div class="govuk-grid-column-one-third">
+
+  </div>
+</div>
+
+{% endblock %}

@@ -24,13 +24,19 @@ $govuk-assets-path: '/govuk/assets/';
 
 
 // Core
+@import "core/filter-layout";
 @import "core/markdown";
+@import "core/table";
 
 
 // Utilities
-@import "utilities/overwrites";
+@import "utilities/overrides";
 
 // Add extra styles here, or re-organise the Sass files in whichever way makes most sense to you
 .app-tag--prototype {
   background-color: govuk-colour('red');
+}
+
+.app-phase-banner--border-bottom-none {
+  border-bottom: 0 !important;
 }

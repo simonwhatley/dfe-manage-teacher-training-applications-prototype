@@ -1,0 +1,15 @@
+.govuk-header {
+  border-bottom: 10px solid #1d70b8;
+}
+
+.govuk-header__logo {
+  @include govuk-media-query($from: tablet) {
+    width: 60%;
+  }
+}
+
+.govuk-header__content {
+  @include govuk-media-query($from: tablet) {
+    width: 40%;
+  }
+}

@@ -1,0 +1,38 @@
+{% extends "_layout-statistics.njk" %}
+
+{% set primaryNavId = "statistics" %}
+{% set title = "Statistics (v1)" %}
+
+{% block pageTitle %}
+{{ title }} – {{ serviceName }} – GOV.UK
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <h1 class="govuk-heading-l">
+        {{- title -}}
+      </h1>
+
+      <ul class="govuk-list govuk-list--bullet">
+        <li>
+          <a class="govuk-link govuk-link--no-visited-state" href="/statistics/v1/status">Status</a>
+        </li>
+        <li>
+          <a class="govuk-link govuk-link--no-visited-state" href="/statistics/v1/subject">Subject</a>
+        </li>
+        <li>
+          <a class="govuk-link govuk-link--no-visited-state" href="/statistics/v1/training-provider">Training provider</a>
+        </li>
+        <li>
+          <a class="govuk-link govuk-link--no-visited-state" href="/statistics/v1/training-location">Training location</a>
+        </li>
+        <li>
+          <a class="govuk-link govuk-link--no-visited-state" href="/statistics/v1/reasons-for-rejection">Reasons for rejection</a>
+        </li>
+      </ul>
+
+    </div>
+  </div>
+{% endblock %}
