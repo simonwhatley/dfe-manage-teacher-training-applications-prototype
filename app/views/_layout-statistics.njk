@@ -30,6 +30,7 @@
 {% from "govuk/components/textarea/macro.njk"            import govukTextarea %}
 {% from "govuk/components/warning-text/macro.njk"        import govukWarningText %}
 
+{% from "_components/filter/macro.njk"                   import appFilter %}
 {% from "_components/footer/macro.njk"                   import appFooter %}
 {% from "_components/primary-navigation/macro.njk"       import appPrimaryNavigation %}
 {% from "_components/task-list/macro.njk"                import appTaskList %}
@@ -50,17 +51,19 @@
   {% endif %}
 
   {{ govukHeader({
-    containerClasses: "govuk-width-container {{- ' ' + containerClasses if containerClasses }}",
-    "navigation": [{
-        href: data.routes.account,
+    productName: serviceName,
+    containerClasses: "govuk-width-container",
+    navigationLabel: "Account menu",
+    navigationClasses: "govuk-header__navigation--end",
+    navigation: [{
+        href: "#",
         text: "Your account",
         active: primaryNavId == 'account'
-      } if data.routes.account | length,
-      {
-        href: data.routes.signout,
+      }, {
+        href: "#",
         text: "Sign out"
-      } if data.routes.signout | length
-    ] if data.isAuthenticated
+      }
+    ]
   }) }}
   
   <!-- "productName": serviceName, -->
@@ -71,8 +74,44 @@
       classes: "app-tag--prototype"
     },
     html: 'This is a new service – your <a class="govuk-link" href="#">feedback</a> will help us to improve it.',
-    classes: "govuk-width-container"
+    classes: "govuk-width-container app-phase-banner--border-bottom-none"
   }) }}
+  
+  {{ appPrimaryNavigation({
+  items: [
+    {
+      href: "#",
+      text: "Applications",
+      active: primaryNavId == 'applications'
+    },
+    {
+      href: "#",
+      text: "Interview schedule",
+      active: primaryNavId == 'interviews'
+    },
+    {
+      href: "#",
+      text: "Activity log",
+      active: primaryNavId == 'activity'
+    },
+    {
+      href: "#",
+      html: "Notifications",
+      active: primaryNavId == 'notifications'
+    },
+    {
+      href: "/statistics",
+      text: "Statistics",
+      active: primaryNavId == 'statistics'
+    },
+    {
+      href: "#",
+      text: "Export data",
+      active: primaryNavId == 'export',
+      classes: "app-primary-navigation__item--align-right"
+    }
+  ]
+}) }}
 
   {% block afterHeader %}
 
@@ -84,14 +123,8 @@
 {% endblock %}
 
 {% block beforeContent %}
-  {# {{ govukPhaseBanner({
-    tag: {
-      text: "prototype",
-      classes: "app-tag--prototype"
-    },
-    html: "This is a prototype of a new service. Some parts of this prototype do not work yet."
-  }) if not data.bare }} #}
   {% block pageNavigation %}
+  
   {% endblock %}
   {% block pageBanner %}
   {% endblock %}
