@@ -25,7 +25,7 @@ const getConfigOptions = (req) => {
 
   if (hasOptions) {
 
-    let slug = `/statistics/v2${req.route.path}`
+    const slug = `/statistics/v2${req.route.path}`
     
     selectedOptions = {
       categories: []
@@ -291,6 +291,14 @@ const getReportName = (report) => {
 
   return name
 }
+
+router.get('/', (req, res) => {
+  delete req.session.data.statisticsOptions
+  
+  res.render('statistics/v2/index', {
+    
+  })
+})
 
 router.get('/courses-by-year', (req, res) => {
   if (!req.session.data.applications) {

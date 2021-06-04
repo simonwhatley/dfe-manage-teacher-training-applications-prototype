@@ -25,7 +25,7 @@ const getConfigOptions = (req) => {
 
   if (hasOptions) {
 
-    let slug = `/statistics/v1${req.route.path}`
+    const slug = `/statistics/v1${req.route.path}`
     
     selectedOptions = {
       categories: []
