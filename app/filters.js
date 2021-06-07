@@ -95,23 +95,28 @@ module.exports = function (env) {
     }
     return label
   }
-  
+
   /* ------------------------------------------------------------------
   utility function to get the nationality label
   example: {{ "Europe" | getNationalityLabel }}
   outputs: "EU, Switzerland, Norway, Iceland or Liechtenstein (not Ireland)"
   ------------------------------------------------------------------ */
   filters.getNationalityLabel = (nationality) => {
+    let label = nationality
     switch (nationality) {
       case 'British':
       case 'British (Dual)':
       case 'Irish':
-        return nationality
+        label = nationality
+        break
       case 'Europe':
-        return 'EU, Switzerland, Norway, Iceland or Liechtenstein (not Ireland)'
+        label = 'EU, Switzerland, Norway, Iceland or Liechtenstein (not Ireland)'
+        break
       case 'Rest of world':
-        return 'Somewhere else'
+        label = 'Somewhere else'
+        break
     }
+    return label
   }
 
   /* ------------------------------------------------------------------
