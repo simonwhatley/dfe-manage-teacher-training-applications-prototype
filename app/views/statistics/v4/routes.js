@@ -225,15 +225,19 @@ router.get('/courses', (req, res) => {
   }
   
   let applications = req.session.data.applications
-  const options = req.session.data.statisticsOptions
-  const filters = getFilters(req)
-
+  
+  let options = req.session.data.statisticsOptions
+  if (!options || options.dimension2 === undefined) {
+    options = null
+  }
+  
   // if the user hasn't configured the report to include cycle data,
   // we just want the current cycle's data
   if (!options || !((options.dimension2 === 'cycle') || (options.dimension3 === 'cycle') || (options.dimension4 === 'cycle'))) {
     applications = applications.filter(application => application.cycle === '2020 to 2021')
   }
 
+  const filters = getFilters(req)
   if (filters.hasFilters) {
     applications = getApplications(applications, filters.filters)
   }
